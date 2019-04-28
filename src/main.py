@@ -34,8 +34,8 @@ class Graph:
                     color[i] = GREY
                     d[i] = d[n] + 1
                     queue.append(i)
-            color[n] = GREY
-        print(d)
+            color[n] = BACK
+        # print(d)
         return d
 
 def main (filename):

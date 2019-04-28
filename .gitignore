@@ -1,2 +1,10 @@
+# Compiled Object files
+*.o
+
+# Remove java files
+*.class
+
+tp2
+bin
 tests
 TP_Modulo_2.pdf
