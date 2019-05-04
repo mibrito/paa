@@ -13,7 +13,7 @@ using namespace std;
 
 // bfs ========================================
 
-// void bfs (vector<vector<int>> adj, int root, int color[], size_t& minDegree, size_t& maxDegree) {
+// void bfs (vector<vector<int>> adj, int root, int color[], int& minDegree, int& maxDegree) {
 // 	queue<int> q;
 // 	// int distances[adj.size()];
 //
@@ -82,26 +82,26 @@ using namespace std;
 // 	}
 // }
 
-void findComponent (vector<list<size_t>> adj, int color[], size_t& start, size_t& end, size_t& minDegree, size_t& maxDegree) {
-	size_t u = start;
+void findComponent (vector<list<int>> adj, int color[], int& start, int& end, int& minDegree, int& maxDegree) {
+	int u = start;
 	while (u <= end) {
 		color[u] = start;
 		if (end < adj[u - 1].front()) {
 			end = adj[u - 1].front();
 		}
 
-		if (maxDegree < adj[u - 1].size()) {
+		if (maxDegree < (int) adj[u - 1].size()) {
 			maxDegree = adj[u - 1].size();
 		}
-		if (minDegree > adj[u - 1].size()) {
+		if (minDegree > (int) adj[u - 1].size()) {
 			minDegree = adj[u - 1].size();
 		}
 		u++;
 	}
 }
 
-void allComponents (vector<list<size_t>> adj) {
-	size_t start, end;
+void allComponents (vector<list<int>> adj) {
+	int start, end;
 	int R, F, B, T;
 	int components = 0;
 
@@ -113,9 +113,9 @@ void allComponents (vector<list<size_t>> adj) {
 	B = 0;
 	T = 0;
 
-	size_t minDegree, maxDegree;
+	int minDegree, maxDegree;
 	start = 1;
-	while (start <= adj.size()) {
+	while (start <= (int) adj.size()) {
 		minDegree = INT_MAX;
 		maxDegree = 0;
 

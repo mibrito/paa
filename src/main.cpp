@@ -10,7 +10,7 @@
 #include "graph.hpp"
 
 int main (int argc, char *argv[]) {
-	vector<list<size_t>> adj;
+	vector<list<int>> adj;
 	map<tuple<int, int>, int> teleports;
 	queue<int> q;
 	if (argc < 2) {

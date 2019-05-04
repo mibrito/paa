@@ -19,10 +19,10 @@ vector<string> tokenizer (string line, char delimiter) {
 
 void readfile (
 	string filename,
-	vector<list<size_t>>& adj,
+	vector<list<int>>& adj,
 	map<tuple<int, int>, int>& teleports
 ) {
-	size_t u, v;
+	int u, v;
 
 	string line;
 	vector<string> tokens;
@@ -91,9 +91,9 @@ void readfile (
 
 
 // stdio functions =================================
-void printAdjacency (vector<vector<size_t>> adj) {
+void printAdjacency (vector<vector<int>> adj) {
 	cout << "adjacency " << adj.size() << endl;
-	for (size_t u = 0; u < adj.size(); u++) {
+	for (int u = 0; u < (int)adj.size(); u++) {
 		cout << u + 1 << ": ";
 		for (int v : adj[u]) {
 			cout << v << ", ";
@@ -112,9 +112,9 @@ void printTeleports (map<tuple<int, int>, int>& teleports) {
 
 void printDistances (vector<vector<int>> distances) {
 	cout << "distances 1" << endl;
-	for (size_t i = 0; i < distances.size(); i++) {
+	for (int i = 0; i < (int)distances.size(); i++) {
 		cout << i + 1 << ": ";
-		for (size_t j = 0; j < distances[i].size(); j++) {
+		for (int j = 0; j < (int)distances[i].size(); j++) {
 			cout << " ";
 			if (distances[i][j] != INT_MAX) {
 				cout << distances[i][j];

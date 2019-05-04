@@ -14,11 +14,11 @@ using namespace std;
 
 void readfile(
 	string filename,
-	vector<list<size_t>>& adj,
+	vector<list<int>>& adj,
 	map<tuple<int, int>, int>& teleports
 );
 
-void printAdjacency (vector<list<size_t>> adj);
+void printAdjacency (vector<list<int>> adj);
 void printTeleports (map<tuple<int, int>, int>& teleports);
 void printDistances (vector<vector<int>> distances);
 #endif
