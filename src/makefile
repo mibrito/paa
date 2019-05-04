@@ -1,5 +1,5 @@
 CC=g++
-CFLAGS= -Wall -g -O3
+CFLAGS= --std=c++17 -Wall -g -O3
 
 all: tp2
 
