@@ -21,3 +21,6 @@ clean:
 
 mrproper: clean
 	rm -rf tp2
+
+run: tp2
+	./tp2 ../tests/in/pdf1.in

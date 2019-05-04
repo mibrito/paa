@@ -6,15 +6,8 @@
 
 using namespace std;
 
-void bfs (
-	int root,
-	vector<vector<int>> adj,
-	vector<int>* distances,
-	vector<int>& parents
-);
-void minTeleports (
-	vector<vector<int>> adj,
-	map<tuple<int, int>, int> teleports
-);
+void bfs (vector<vector<int>> adj, int root, int color[], size_t& minDegree, size_t& maxDegree);
+void allComponents (vector<vector<int>> adj);
+void calculateTeleports (vector<vector<int>> adj, map<tuple<int, int>, int>& teleports);
 
 #endif

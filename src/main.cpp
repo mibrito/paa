@@ -1,26 +1,27 @@
 #include <iostream>
 #include <climits>
 #include <vector>
+#include <map>
 #include <tuple>
+#include <queue>
 
 #include "io.hpp"
 #include "graph.hpp"
 
 int main (int argc, char *argv[]) {
-	int N, M;
 	vector<vector<int>> adj;
-	vector<tuple<int, int>> teleports;
-
+	map<tuple<int, int>, int> teleports;
+	queue<int> q;
 	if (argc < 2) {
 		cout << "Usage:" << std::endl;
 		cout << "./tp2 <file.in> <file.out>" << std::endl;
 	}
 
-	readfile(argv[1], N, M, adj, teleports);
+	readfile(argv[1], adj, teleports);
 
-	vector<vector<int>> parents (N, vector<int>(N, -1));
-	vector<vector<int>> distances (N, vector<int>(N, INT_MAX));
-	// allDistances(adj, teleports, distances, parents);
+	allComponents(adj);
+
+	// calculateTeleports(adj, teleports);
 
 
 	// cout << "dimentions" << endl;

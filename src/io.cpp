@@ -1,10 +1,3 @@
-#include <bits/stdc++.h>
-#include <iostream>
-#include <fstream>
-#include <cstring>
-#include <vector>
-#include <tuple>
-
 #include "io.hpp"
 
 vector<string> tokenizer (string line, char delimiter) {
@@ -24,7 +17,11 @@ vector<string> tokenizer (string line, char delimiter) {
 	return tokens;
 }
 
-void readfile (string filename, int& N, int& M, vector<vector<int>>& adj, vector<tuple<int, int>>& teleports) {
+void readfile (
+	string filename,
+	vector<vector<int>>& adj,
+	map<tuple<int, int>, int>& teleports
+) {
 	int u, v;
 
 	string line;
@@ -36,8 +33,8 @@ void readfile (string filename, int& N, int& M, vector<vector<int>>& adj, vector
 		getline (file, line);
 
 		tokens = tokenizer(line, ' ');
-		N = stoi(tokens[0]);
-		M = stoi(tokens[1]);
+		int N = stoi(tokens[0]);
+		int M = stoi(tokens[1]);
 
 		adj.resize(N);
 		// cout << N << " " << M << endl;
@@ -56,8 +53,6 @@ void readfile (string filename, int& N, int& M, vector<vector<int>>& adj, vector
 
 			adj[u - 1].push_back(v);
 			adj[v - 1].push_back(u);
-
-			// adj.push_back(make_tuple(stoi(tokens[0]), stoi(tokens[1])));
 		}
 
 		u = -1;
@@ -71,7 +66,10 @@ void readfile (string filename, int& N, int& M, vector<vector<int>>& adj, vector
 			}
 
 			tokens = tokenizer(line, ' ');
-			teleports.push_back(make_tuple(stoi(tokens[0]), stoi(tokens[1])));
+			u = stoi(tokens[0]);
+			v = stoi(tokens[1]);
+
+			teleports[make_tuple(u, v)] = INT_MAX;
 		}
 
 		file.close();
@@ -93,10 +91,11 @@ void printAdjacency (vector<vector<int>> adj) {
 	}
 }
 
-void printTeleports (vector<tuple<int, int>> teleports) {
+void printTeleports (map<tuple<int, int>, int>& teleports) {
 	cout << "teleports" << endl;
-	for (tuple<int, int> t : teleports) {
-		cout << get<0>(t) << " " << get<1>(t) << endl;
+	map<tuple<int, int>, int>::iterator itr;
+	for (itr = teleports.begin(); itr != teleports.end(); ++itr) {
+		cout << get<0>(itr->first) << " " << get<1>(itr->first) << " " << itr->second << endl;
 	}
 }
 
