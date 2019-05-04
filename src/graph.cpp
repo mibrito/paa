@@ -83,8 +83,7 @@ using namespace std;
 // }
 
 void findComponent (vector<list<int>> adj, int color[], int& start, int& end, int& minDegree, int& maxDegree) {
-	int u = start;
-	while (u <= end) {
+	for (int u = start; u <= end; u++) {
 		color[u] = start;
 		if (end < adj[u].front()) {
 			end = adj[u].front();
@@ -96,7 +95,6 @@ void findComponent (vector<list<int>> adj, int color[], int& start, int& end, in
 		if (minDegree > (int) adj[u].size()) {
 			minDegree = adj[u].size();
 		}
-		u++;
 	}
 }
 
