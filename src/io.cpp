@@ -48,26 +48,24 @@ void readfile (
 			}
 
 			tokens = tokenizer(line, ' ');
-			u = stoi(tokens[0]);
-			v = stoi(tokens[1]);
+			u = stoi(tokens[0]) - 1;
+			v = stoi(tokens[1]) - 1;
 
 			// insert the node grater first on adjacency list
-			if (adj[u - 1].front() < v) {
-				adj[u - 1].push_front(v);
+			if (adj[u].front() < v) {
+				adj[u].push_front(v);
 			} else {
-				adj[u - 1].push_back(v);
+				adj[u].push_back(v);
 			}
 
 			// insert the node grater first on adjacency list
-			if (adj[v - 1].front() < u) {
-				adj[v - 1].push_front(u);
+			if (adj[v].front() < u) {
+				adj[v].push_front(u);
 			} else {
-				adj[v - 1].push_back(u);
+				adj[v].push_back(u);
 			}
 		}
 
-		u = -1;
-		v = -1;
 		// get N teleports
 		for (int n = 0; n < N; n++) {
 			if(!getline (file, line)) {
@@ -77,8 +75,8 @@ void readfile (
 			}
 
 			tokens = tokenizer(line, ' ');
-			u = stoi(tokens[0]);
-			v = stoi(tokens[1]);
+			u = stoi(tokens[0]) - 1;
+			v = stoi(tokens[1]) - 1 ;
 
 			teleports[make_tuple(u, v)] = INT_MAX;
 		}

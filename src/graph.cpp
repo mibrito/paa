@@ -20,8 +20,8 @@ using namespace std;
 // 	// fill(distances, distances + adj.size(), INT_MAX);
 //
 // 	q.push(root);
-// 	color[root - 1] = root;
-// 	// distances[root - 1] = 0;
+// 	color[root] = root;
+// 	// distances[root] = 0;
 // 	while (!q.empty()) {
 // 		int u = q.front();
 // 		q.pop();
@@ -34,10 +34,10 @@ using namespace std;
 // 			minDegree = adj[u -1].size();
 // 		}
 //
-// 		for (int v: adj[u - 1]) {
-// 			if (color[v - 1] == WHITE) {
-// 				color[v - 1] = root;
-// 				// distances[v - 1] = distances[u - 1] + 1;
+// 		for (int v: adj[u]) {
+// 			if (color[v] == WHITE) {
+// 				color[v] = root;
+// 				// distances[v] = distances[u] + 1;
 // 				q.push(v);
 // 			}
 // 		}
@@ -50,23 +50,23 @@ using namespace std;
 // 	fill(distances, distances + adj.size(), INT_MAX);
 //
 // 	q.push(source);
-// 	distances[source - 1] = 0;
+// 	distances[source] = 0;
 //
 //
 // 	while (!q.empty()) {
 // 		int u = q.front();
 // 		q.pop();
 //
-// 		for (int v: adj[u - 1]) {
-// 			if (distances[v - 1] == INT_MAX) {
-// 				distances[v - 1] = distances[u - 1] + 1;
-// 				if (v == target) return distances[v - 1];
+// 		for (int v: adj[u]) {
+// 			if (distances[v] == INT_MAX) {
+// 				distances[v] = distances[u] + 1;
+// 				if (v == target) return distances[v];
 // 				q.push(v);
 // 			}
 // 		}
 // 	}
 //
-// 	return distances[target - 1];
+// 	return distances[target];
 // }
 
 // void calculateTeleports (vector<vector<int>> adj, map<tuple<int, int>, int>& teleports) {
@@ -86,15 +86,15 @@ void findComponent (vector<list<int>> adj, int color[], int& start, int& end, in
 	int u = start;
 	while (u <= end) {
 		color[u] = start;
-		if (end < adj[u - 1].front()) {
-			end = adj[u - 1].front();
+		if (end < adj[u].front()) {
+			end = adj[u].front();
 		}
 
-		if (maxDegree < (int) adj[u - 1].size()) {
-			maxDegree = adj[u - 1].size();
+		if (maxDegree < (int) adj[u].size()) {
+			maxDegree = adj[u].size();
 		}
-		if (minDegree > (int) adj[u - 1].size()) {
-			minDegree = adj[u - 1].size();
+		if (minDegree > (int) adj[u].size()) {
+			minDegree = adj[u].size();
 		}
 		u++;
 	}
@@ -114,14 +114,13 @@ void allComponents (vector<list<int>> adj) {
 	T = 0;
 
 	int minDegree, maxDegree;
-	start = 1;
-	while (start <= (int) adj.size()) {
+	start = 0;
+	while (start < (int) adj.size()) {
 		minDegree = INT_MAX;
 		maxDegree = 0;
 
 		end = start;
 		findComponent (adj, color, start, end, minDegree, maxDegree);
-
 		components++;
 
 		if (maxDegree <= 2) {
