@@ -19,10 +19,10 @@ vector<string> tokenizer (string line, char delimiter) {
 
 void readfile (
 	string filename,
-	vector<vector<int>>& adj,
+	vector<list<size_t>>& adj,
 	map<tuple<int, int>, int>& teleports
 ) {
-	int u, v;
+	size_t u, v;
 
 	string line;
 	vector<string> tokens;
@@ -51,8 +51,19 @@ void readfile (
 			u = stoi(tokens[0]);
 			v = stoi(tokens[1]);
 
-			adj[u - 1].push_back(v);
-			adj[v - 1].push_back(u);
+			// insert the node grater first on adjacency list
+			if (adj[u - 1].front() < v) {
+				adj[u - 1].push_front(v);
+			} else {
+				adj[u - 1].push_back(v);
+			}
+
+			// insert the node grater first on adjacency list
+			if (adj[v - 1].front() < u) {
+				adj[v - 1].push_front(u);
+			} else {
+				adj[v - 1].push_back(u);
+			}
 		}
 
 		u = -1;
@@ -80,7 +91,7 @@ void readfile (
 
 
 // stdio functions =================================
-void printAdjacency (vector<vector<int>> adj) {
+void printAdjacency (vector<vector<size_t>> adj) {
 	cout << "adjacency " << adj.size() << endl;
 	for (size_t u = 0; u < adj.size(); u++) {
 		cout << u + 1 << ": ";

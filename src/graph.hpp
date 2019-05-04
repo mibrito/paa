@@ -3,11 +3,12 @@
 
 #include <map>
 #include <vector>
+#include <list>
 
 using namespace std;
 
-void bfs (vector<vector<int>> adj, int root, int color[], size_t& minDegree, size_t& maxDegree);
-void allComponents (vector<vector<int>> adj);
-void calculateTeleports (vector<vector<int>> adj, map<tuple<int, int>, int>& teleports);
+void allComponents (vector<list<size_t>> adj);
+// void bfs (vector<list<int>> adj, int root, int color[], size_t& minDegree, size_t& maxDegree);
+// void calculateTeleports (vector<vector<int>> adj, map<tuple<int, int>, int>& teleports);
 
 #endif

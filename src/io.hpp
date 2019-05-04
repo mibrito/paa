@@ -7,13 +7,18 @@
 #include <cstring>
 #include <climits>
 #include <vector>
+#include <list>
 #include <tuple>
 
 using namespace std;
 
-void readfile(string, vector<vector<int>>&, map<tuple<int, int>, int>& teleports);
+void readfile(
+	string filename,
+	vector<list<size_t>>& adj,
+	map<tuple<int, int>, int>& teleports
+);
 
-void printAdjacency (vector<vector<int>> adj);
+void printAdjacency (vector<list<size_t>> adj);
 void printTeleports (map<tuple<int, int>, int>& teleports);
 void printDistances (vector<vector<int>> distances);
 #endif
