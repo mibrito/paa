@@ -1,6 +1,7 @@
 #include <iostream>
 #include <climits>
 #include <vector>
+#include <array>
 #include <map>
 #include <tuple>
 #include <queue>

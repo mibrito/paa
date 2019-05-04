@@ -19,7 +19,10 @@ void bfs (vector<vector<int>> adj, int root, int& end, int color[], size_t& minD
 
 	// fill(distances, distances + adj.size(), INT_MAX);
 
-	q.push(root);
+	for(int i = root; i <= end; i++) {
+		q.push(root);
+		color[i - 1] = root;
+	}
 	color[root - 1] = root;
 	// distances[root - 1] = 0;
 	while (!q.empty()) {
@@ -106,7 +109,7 @@ void allComponents (vector<vector<int>> adj) {
 			minDegree = INT_MAX;
 			maxDegree = 0;
 
-			end = u+1;
+			end = u+4;
 			bfs (adj, end, end, color, minDegree, maxDegree);
 
 			components++;
