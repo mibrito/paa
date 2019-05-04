@@ -48,11 +48,11 @@ void readfile (
 			}
 
 			tokens = tokenizer(line, ' ');
-			u = stoi(tokens[0]);
-			v = stoi(tokens[1]);
+			u = stoi(tokens[0]) - 1;
+			v = stoi(tokens[1]) - 1;
 
-			adj[u - 1].push_back(v);
-			adj[v - 1].push_back(u);
+			adj[u].push_back(v);
+			adj[v].push_back(u);
 		}
 
 		u = -1;
@@ -66,8 +66,8 @@ void readfile (
 			}
 
 			tokens = tokenizer(line, ' ');
-			u = stoi(tokens[0]);
-			v = stoi(tokens[1]);
+			u = stoi(tokens[0]) - 1;
+			v = stoi(tokens[1]) - 1;
 
 			teleports[make_tuple(u, v)] = INT_MAX;
 		}
