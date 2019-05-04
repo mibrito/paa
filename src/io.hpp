@@ -11,7 +11,7 @@
 
 using namespace std;
 
-void readfile(string, vector<vector<int>>&, map<tuple<int, int>, int>& teleports);
+void readfile(string filename, vector<vector<int>>& adj, map<tuple<int, int>, int>& teleports);
 
 void printAdjacency (vector<vector<int>> adj);
 void printTeleports (map<tuple<int, int>, int>& teleports);
