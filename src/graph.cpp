@@ -13,7 +13,7 @@ using namespace std;
 
 // bfs ========================================
 
-void bfs (vector<vector<int>> adj, int root, int color[], size_t& minDegree, size_t& maxDegree) {
+void bfs (vector<vector<int>> adj, int root, int& end, int color[], size_t& minDegree, size_t& maxDegree) {
 	queue<int> q;
 	// int distances[adj.size()];
 
@@ -24,6 +24,9 @@ void bfs (vector<vector<int>> adj, int root, int color[], size_t& minDegree, siz
 	// distances[root - 1] = 0;
 	while (!q.empty()) {
 		int u = q.front();
+		if (end < u) {
+			end = u;
+		}
 		q.pop();
 
 		if (maxDegree < adj[u -1].size()) {
@@ -83,6 +86,7 @@ void calculateTeleports (vector<vector<int>> adj, map<tuple<int, int>, int>& tel
 }
 
 void allComponents (vector<vector<int>> adj) {
+	int end;
 	int R, F, B, T;
 	int components = 0;
 
@@ -95,12 +99,15 @@ void allComponents (vector<vector<int>> adj) {
 	T = 0;
 
 	size_t minDegree, maxDegree;
-	for (size_t u = 0; u < adj.size(); u++) {
-		if (color[u] == WHITE) {
-			if (u < 100) cout << u << endl;
+	size_t u = 0;
+	while (u < adj.size()) {
+		// if (color[u] == WHITE) {
+			// if (u < 100) cout << u << endl;
 			minDegree = INT_MAX;
 			maxDegree = 0;
-			bfs (adj, u+1, color, minDegree, maxDegree);
+
+			end = u+1;
+			bfs (adj, end, end, color, minDegree, maxDegree);
 
 			components++;
 
@@ -117,7 +124,8 @@ void allComponents (vector<vector<int>> adj) {
 					B++;
 				}
 			}
-		}
+		// }
+		u = end + 1;
 	}
 
 	cout << components << endl;
