@@ -19,7 +19,7 @@ vector<string> tokenizer (string line, char delimiter) {
 
 void readfile (
 	string filename,
-	vector<list<int>>& adj,
+	vector<vector<int>>& adj,
 	map<tuple<int, int>, int>& teleports
 ) {
 	int u, v;
@@ -52,17 +52,17 @@ void readfile (
 			v = stoi(tokens[1]) - 1;
 
 			// insert the node grater first on adjacency list
-			if (adj[u].front() < v) {
-				adj[u].push_front(v);
-			} else {
+			if (!adj[u].size() || adj[u].back() < v) {
 				adj[u].push_back(v);
+			} else {
+				adj[u].insert(adj[u].end() - 1, v);
 			}
 
 			// insert the node grater first on adjacency list
-			if (adj[v].front() < u) {
-				adj[v].push_front(u);
-			} else {
+			if (!adj[v].size() || adj[v].back() < u) {
 				adj[v].push_back(u);
+			} else {
+				adj[v].insert(adj[v].end() - 1, u);
 			}
 		}
 
