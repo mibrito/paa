@@ -1,5 +1,7 @@
 #include "io.hpp"
 
+bool compareTeleport (array<int, 2> i, array<int, 2> j) { return (i[0] < j[0]); }
+
 vector<string> tokenizer (string line, char delimiter) {
 	// Vector of string to save tokens
 	vector <string> tokens;
@@ -20,7 +22,7 @@ vector<string> tokenizer (string line, char delimiter) {
 void readfile (
 	string filename,
 	vector<vector<int>>& adj,
-	map<tuple<int, int>, int>& teleports
+	vector<array<int, 2>>& teleports
 ) {
 	int u, v;
 
@@ -37,7 +39,6 @@ void readfile (
 		int M = stoi(tokens[1]);
 
 		adj.resize(N);
-		// cout << N << " " << M << endl;
 
 		// get M positions
 		for (int m = 0; m < M; m++) {
@@ -78,9 +79,14 @@ void readfile (
 			u = stoi(tokens[0]) - 1;
 			v = stoi(tokens[1]) - 1 ;
 
-			teleports[make_tuple(u, v)] = INT_MAX;
+			if (u < v) {
+				teleports.push_back({ u, v });
+			} else {
+				teleports.push_back({ v, u });
+			}
 		}
 
+		sort(teleports.begin(), teleports.end(), compareTeleport);
 		file.close();
 	} else {
 		cout << "Unable to open file" << endl;
@@ -100,27 +106,27 @@ void printAdjacency (vector<vector<int>> adj) {
 	}
 }
 
-void printTeleports (map<tuple<int, int>, int>& teleports) {
-	cout << "teleports" << endl;
-	map<tuple<int, int>, int>::iterator itr;
-	for (itr = teleports.begin(); itr != teleports.end(); ++itr) {
-		cout << get<0>(itr->first) << " " << get<1>(itr->first) << " " << itr->second << endl;
-	}
-}
+// void printTeleports (vector<array<int, 2>>& teleports) {
+// 	cout << "teleports" << endl;
+// 	vector<array<int, 2>>::iterator itr;
+// 	for (itr = teleports.begin(); itr != teleports.end(); ++itr) {
+// 		cout << get<0>(itr->first) << " " << get<1>(itr->first) << " " << itr->second << endl;
+// 	}
+// }
 
-void printDistances (vector<vector<int>> distances) {
-	cout << "distances 1" << endl;
-	for (int i = 0; i < (int)distances.size(); i++) {
-		cout << i + 1 << ": ";
-		for (int j = 0; j < (int)distances[i].size(); j++) {
-			cout << " ";
-			if (distances[i][j] != INT_MAX) {
-				cout << distances[i][j];
-			} else {
-				cout << "-";
-			}
-			cout << " "; // << ", " << parents[i][j];
-		}
-		cout << endl;
-	}
-}
+// void printDistances (vector<vector<int>> distances) {
+// 	cout << "distances 1" << endl;
+// 	for (int i = 0; i < (int)distances.size(); i++) {
+// 		cout << i + 1 << ": ";
+// 		for (int j = 0; j < (int)distances[i].size(); j++) {
+// 			cout << " ";
+// 			if (distances[i][j] != INT_MAX) {
+// 				cout << distances[i][j];
+// 			} else {
+// 				cout << "-";
+// 			}
+// 			cout << " "; // << ", " << parents[i][j];
+// 		}
+// 		cout << endl;
+// 	}
+// }

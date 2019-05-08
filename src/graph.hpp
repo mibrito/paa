@@ -7,8 +7,8 @@
 
 using namespace std;
 
-void allComponents (vector<vector<int>> adj, vector<array<int, 2>> components);
-// void bfs (vector<vector<int>> adj, int root, int color[], int& minDegree, int& maxDegree);
-void calculateTeleports (vector<vector<int>> adj, map<tuple<int, int>, int>& teleports);
+void allComponents (vector<vector<int>> adj, vector<array<int, 3>>& components);
+// void calculateDistances (vector<vector<int>> adj, vector<array<int, 2>> components);
+void calculateTeleports (vector<vector<int>> adj, vector<array<int, 2>>& teleports, vector<array<int, 3>> components);
 
 #endif

@@ -11,8 +11,9 @@
 
 int main (int argc, char *argv[]) {
 	vector<vector<int>> adj;
-	map<tuple<int, int>, int> teleports;
-	vector<array<int, 2>> components;
+	vector<array<int, 2>> teleports;
+	vector<array<int, 3>> components;
+
 	if (argc < 2) {
 		cout << "Usage:" << std::endl;
 		cout << "./tp2 <file.in> <file.out>" << std::endl;
@@ -22,14 +23,8 @@ int main (int argc, char *argv[]) {
 
 	allComponents(adj, components);
 
-	// calculateTeleports(adj, teleports);
+	calculateTeleports(adj, teleports, components);
 
-
-	// cout << "dimentions" << endl;
-	// cout << N << " " << M << endl;
-	// printAdjacency(adj);
-	// printTeleports(teleports);
-	// printDistances (distances);
-
+	// calculateDistances(adj, components);
 	return 0;
 }
