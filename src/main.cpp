@@ -1,7 +1,7 @@
 #include <iostream>
 #include <climits>
 #include <vector>
-#include <list>
+#include <array>
 #include <map>
 #include <tuple>
 #include <queue>
@@ -12,7 +12,7 @@
 int main (int argc, char *argv[]) {
 	vector<vector<int>> adj;
 	map<tuple<int, int>, int> teleports;
-	queue<int> q;
+	vector<array<int, 2>> components;
 	if (argc < 2) {
 		cout << "Usage:" << std::endl;
 		cout << "./tp2 <file.in> <file.out>" << std::endl;
@@ -20,7 +20,7 @@ int main (int argc, char *argv[]) {
 
 	readfile(argv[1], adj, teleports);
 
-	allComponents(adj);
+	allComponents(adj, components);
 
 	// calculateTeleports(adj, teleports);
 
