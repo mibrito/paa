@@ -53,9 +53,10 @@ void calculateTeleports (
 	int cKey = 0;
 	int cCount[components.size()] = { 0 };
 
-	for (array<int, 2> t : teleports) {
-		int u = t[0];
-		int v = t[1];
+	size_t tKey = 0;
+	while (tKey < teleports.size()) {
+		int u = teleports[tKey][0];
+		int v = teleports[tKey][1];
 
 		while (cKey < (int) components.size() && (u > components[cKey][1])) {
 			if (cCount[cKey] < min) {
@@ -63,17 +64,12 @@ void calculateTeleports (
 			}
 			cKey++;
 		}
-		// frigata always number of teleports equals T - 1
-		if (components[cKey][2] == F) {
-			cCount[cKey] = (components[cKey][1] - components[cKey][0]) * 2;
-			if (min > (components[cKey][1] - components[cKey][0]) * 2) {
-				min = (components[cKey][1] - components[cKey][0]) * 2;
-			}
-		// other ships
+
+		if (cCount[cKey] < min) {
+			cCount[cKey] += u != v ? findDistance(adj, u, v) : 0;
+			tKey++;
 		} else {
-			if (cCount[cKey] < min && u != v) {
-				cCount[cKey] += findDistance(adj, u, v);
-			}
+			while (tKey < teleports.size() && teleports[tKey][0] <= components[cKey][1]) tKey++;
 		}
 	}
 
