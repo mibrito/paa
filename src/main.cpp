@@ -12,7 +12,7 @@
 int main (int argc, char *argv[]) {
 	vector<vector<int>> adj;
 	vector<array<int, 2>> teleports;
-	vector<array<int, 3>> components;
+	vector<array<int, 2>> components;
 
 	if (argc < 2) {
 		cout << "Usage:" << std::endl;
@@ -23,8 +23,8 @@ int main (int argc, char *argv[]) {
 
 	allComponents(adj, components);
 
-	calculateTeleports(adj, teleports, components);
+	// calculateTeleports(adj, teleports, components);
 
-	// calculateDistances(adj, components);
+	calculateDistances(adj, components, teleports);
 	return 0;
 }

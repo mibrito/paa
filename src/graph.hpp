@@ -7,8 +7,8 @@
 
 using namespace std;
 
-void allComponents (vector<vector<int>> adj, vector<array<int, 3>>& components);
-// void calculateDistances (vector<vector<int>> adj, vector<array<int, 2>> components);
+void allComponents (vector<vector<int>> adj, vector<array<int, 2>>& components);
+void calculateDistances (vector<vector<int>> adj, vector<array<int, 2>> components, vector<array<int, 2>> teleports);
 void calculateTeleports (vector<vector<int>> adj, vector<array<int, 2>>& teleports, vector<array<int, 3>> components);
 
 #endif
