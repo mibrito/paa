@@ -10,7 +10,7 @@
  * @param s [description]
  * @param t [description]
  */
-Teleport::Teleport(int s, int t) {
+Teleport::Teleport(const int s, const int t) {
 	source = s;
 	target = t;
 }
@@ -22,11 +22,11 @@ Teleport::Teleport(int s, int t) {
  * @param e [description]
  * @param t [description]
  */
-Ship::Ship(int s, int e, int t) {
-	start = s;
-	end = e;
-	size = e - s + 1;
-	type = t;
+Ship::Ship (const int start, const int end, const int type) {
+	this->start = start;
+	this->end = end;
+	this->size = end - start + 1;
+	this->type = type;
 }
 
 
@@ -34,16 +34,7 @@ Ship::Ship(int s, int e, int t) {
  * [Ship::addTeleport  description]
  * @param teleport [description]
  */
-bool Ship::operator < (Ship & other) {
-	return minTeleports < other.minTeleports;
-}
-
-
-/**
- * [Ship::addTeleport  description]
- * @param teleport [description]
- */
-void Ship::addTeleport (Teleport teleport) {
+void Ship::addTeleport (const Teleport& teleport) {
 	teleports.push_back(teleport);
 }
 
@@ -52,14 +43,14 @@ void Ship::addTeleport (Teleport teleport) {
  * [Graph::fillTeleports  description]
  * @param ts [description]
  */
-void Graph::fillTeleports (vector<Teleport> ts) {
+void Graph::addTeleportsOnShips (const vector<Teleport>& ts) {
 	size_t tKey = 0;
 	for (size_t s = 0; s < ships.size(); s++) {
 		while (tKey < ts.size() && ts[tKey].source < ships[s].start) tKey++;
 		while (tKey < ts.size() && ts[tKey].source >= ships[s].start && ts[tKey].source <= ships[s].end) {
 			ships[s].addTeleport(ts[tKey]);
 			if (ts[tKey].source != ts[tKey].target) {
-				ships[s].minTeleports++;
+				ships[s].numberOfTeleports++;
 			}
 			tKey++;
 		}
@@ -118,14 +109,14 @@ void Graph::calculateShips () {
  * [Graph::calculateDistances  description]
  * @param teleports [description]
  */
-void Graph::calculateDistances (vector<Teleport> teleports) {
+void Graph::calculateAdvantageTime (const vector<Teleport>& teleports) {
 	int min = MAX, cur = 0;
 
-	// fill ships with its teleports
-	fillTeleports(teleports);
+	// Fill ships with its teleports
+	addTeleportsOnShips(teleports);
 
-	// sort ships by the best case scenario
-	std::sort(ships.begin(), ships.end());
+	// Sort ships by the best case scenario of teleports
+	sort(ships.begin(), ships.end(), Ship::compareNumberOfTeleports);
 
 	for (Ship ship : ships) {
 		// Skip ships which the best case scenario for teleports is still bigger
@@ -133,7 +124,7 @@ void Graph::calculateDistances (vector<Teleport> teleports) {
 		// With this evaluation the algorithm avoids doing all the work of
 		// calculating the All-Pair Shortest-Pairs for this ship to not
 		// improve the best solution.
-		if (ship.minTeleports > min) break;
+		if (ship.numberOfTeleports > min) break;
 
 		// Initialize the distances matrix for this ship
 		int d[ship.size][ship.size];

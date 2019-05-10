@@ -21,25 +21,39 @@ public:
 	int source;
 	int target;
 
-	Teleport(int s, int t);
-	bool operator < (Teleport const & other){
-		return source < other.source;
+	Teleport(const int s, const int t);
+
+	/**
+	 * [Ship  description]
+	 * @param start [description]
+	 * @param end   [description]
+	 * @param type  [description]
+	 */
+	static bool compareSources (const Teleport& a, const Teleport& b){
+		return a.source < b.source;
 	}
 };
 
 class Ship {
 public:
+	char type;
 	int start;
 	int end;
 	int size;
-	char type;
 
-	int minTeleports = 0;
+	int numberOfTeleports = 0;
 	vector<Teleport> teleports;
 
-	Ship(int s, int e, int t);
-	bool operator < (Ship & other);
-	void addTeleport (Teleport t);
+	Ship (const int start, const int end, const int type);
+	void addTeleport (const Teleport& teleport);
+
+	/**
+	 * [Ship::addTeleport  description]
+	 * @param teleport [description]
+	 */
+	static bool compareNumberOfTeleports (const Ship& a, const Ship & b) {
+		return a.numberOfTeleports < b.numberOfTeleports;
+	}
 };
 
 class Graph {
@@ -53,9 +67,9 @@ public:
 	int cTrans = 0;
 	int cBom = 0;
 
-	void fillTeleports (vector<Teleport> ts);
+	void addTeleportsOnShips (const vector<Teleport>& ts);
 	void calculateShips ();
-	void calculateDistances (vector<Teleport> teleports);
+	void calculateAdvantageTime (const vector<Teleport>& teleports);
 };
 
 #endif

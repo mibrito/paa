@@ -21,6 +21,6 @@ int main (int argc, char *argv[]) {
 
 	graph.calculateShips();
 
-	graph.calculateDistances(teleports);
+	graph.calculateAdvantageTime(teleports);
 	return 0;
 }

@@ -97,7 +97,7 @@ void readfile (
 			}
 		}
 
-		sort(teleports.begin(), teleports.end());
+		sort(teleports.begin(), teleports.end(), Teleport::compareSources);
 		file.close();
 	} else {
 		cout << "Unable to open file" << endl;
