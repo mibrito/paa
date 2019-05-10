@@ -81,22 +81,30 @@ void Graph::calculateShips () {
 		start = end + 1;
 	}
 
-	// cout << components.size() << endl;
 	cout << cRec << " " << cFri << " " << cBom << " " << cTrans << endl;
 }
 
 void Graph::calculateDistances (vector<Teleport> teleports) {
 	int min = MAX, cur = 0;
 
+	// fill ships with its teleports
 	fillTeleports(teleports);
+
+	// sort ships by the best case scenario
 	std::sort(ships.begin(), ships.end());
 
 	for (Ship ship : ships) {
+		// Skip ships which the best case scenario for teleports is still bigger
+		// then the minimum already found.
+		// With this evaluation the algorithm avoids doing all the work of
+		// calculating the All-Pair Shortest-Pairs for this ship for nothing.
 		if (ship.minTeleports > min) continue;
 
+		// Initialize the distances matrix for this ship
 		int d[ship.size][ship.size];
 		fill(d[0], d[0] + ship.size * ship.size, MAX);
 
+		// Fill with zeros de diagonal and ones with neighbors of adjacency list
 		for (int i = 0; i < ship.size; i++) {
 			for (int v : adj[ship.start + i]) {
 				d[i][v - ship.start] = 1;
@@ -105,6 +113,7 @@ void Graph::calculateDistances (vector<Teleport> teleports) {
 			d[i][i] = 0;
 		}
 
+		// Calculate All-Pair Shortest-Pairs with Floyd-Warshall
 		for (int k = 0; k < ship.size; k++) {
 			for (int i = 0; i < ship.size; i++) {
 				for (int j = i+1; j < ship.size; j++) {
@@ -116,6 +125,7 @@ void Graph::calculateDistances (vector<Teleport> teleports) {
 			}
 		}
 
+		// Calculate the time spent on teleporting troops between combat posts
 		cur = 0;
 		for (Teleport t : ship.teleports) {
 			cur += d[t.source - ship.start][t.target - ship.start];
@@ -123,6 +133,8 @@ void Graph::calculateDistances (vector<Teleport> teleports) {
 				break;
 			}
 		}
+
+		// In case of the current ship has the minimum teleporting time
 		if (cur < min) {
 			min = cur;
 		}
