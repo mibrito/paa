@@ -1,17 +1,27 @@
 #include <iostream>
-#include <climits>
 #include <cstring>
-#include <queue>
-#include <stack>
 #include <algorithm>
 
 #include "graph.hpp"
 
+
+/**
+ * [Teleport::Teleport description]
+ * @param s [description]
+ * @param t [description]
+ */
 Teleport::Teleport(int s, int t) {
 	source = s;
 	target = t;
 }
 
+
+/**
+ * [Ship::Ship description]
+ * @param s [description]
+ * @param e [description]
+ * @param t [description]
+ */
 Ship::Ship(int s, int e, int t) {
 	start = s;
 	end = e;
@@ -19,14 +29,29 @@ Ship::Ship(int s, int e, int t) {
 	type = t;
 }
 
+
+/**
+ * [Ship::addTeleport  description]
+ * @param teleport [description]
+ */
 bool Ship::operator < (Ship & other) {
 	return minTeleports < other.minTeleports;
 }
 
+
+/**
+ * [Ship::addTeleport  description]
+ * @param teleport [description]
+ */
 void Ship::addTeleport (Teleport teleport) {
 	teleports.push_back(teleport);
 }
 
+
+/**
+ * [Graph::fillTeleports  description]
+ * @param ts [description]
+ */
 void Graph::fillTeleports (vector<Teleport> ts) {
 	size_t tKey = 0;
 	for (size_t s = 0; s < ships.size(); s++) {
@@ -41,6 +66,10 @@ void Graph::fillTeleports (vector<Teleport> ts) {
 	}
 }
 
+
+/**
+ * [Graph::calculateShips  description]
+ */
 void Graph::calculateShips () {
 	int start, end, type;
 	int sumDegree, maxDegree;
@@ -84,6 +113,11 @@ void Graph::calculateShips () {
 	cout << cRec << " " << cFri << " " << cBom << " " << cTrans << endl;
 }
 
+
+/**
+ * [Graph::calculateDistances  description]
+ * @param teleports [description]
+ */
 void Graph::calculateDistances (vector<Teleport> teleports) {
 	int min = MAX, cur = 0;
 
@@ -97,8 +131,9 @@ void Graph::calculateDistances (vector<Teleport> teleports) {
 		// Skip ships which the best case scenario for teleports is still bigger
 		// then the minimum already found.
 		// With this evaluation the algorithm avoids doing all the work of
-		// calculating the All-Pair Shortest-Pairs for this ship for nothing.
-		if (ship.minTeleports > min) continue;
+		// calculating the All-Pair Shortest-Pairs for this ship to not
+		// improve the best solution.
+		if (ship.minTeleports > min) break;
 
 		// Initialize the distances matrix for this ship
 		int d[ship.size][ship.size];

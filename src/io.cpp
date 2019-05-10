@@ -1,5 +1,11 @@
 #include "io.hpp"
 
+/**
+ * [tokenizer  description]
+ * @param  line      [description]
+ * @param  delimiter [description]
+ * @return           [description]
+ */
 vector<string> tokenizer (string line, char delimiter) {
 	// Vector of string to save tokens
 	vector <string> tokens;
@@ -17,6 +23,13 @@ vector<string> tokenizer (string line, char delimiter) {
 	return tokens;
 }
 
+
+/**
+ * [readfile  description]
+ * @param filename  [description]
+ * @param g         [description]
+ * @param teleports [description]
+ */
 void readfile (
 	string filename,
 	Graph & g,

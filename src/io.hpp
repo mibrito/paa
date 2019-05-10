@@ -1,14 +1,11 @@
-#ifndef IO_HPP    // To make sure you don't declare the function more than once by including the header multiple times.
+#ifndef IO_HPP
 #define IO_HPP
 
 #include <bits/stdc++.h>
 #include <iostream>
 #include <fstream>
 #include <cstring>
-#include <climits>
 #include <vector>
-#include <list>
-#include <tuple>
 
 #include "graph.hpp"
 
