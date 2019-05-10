@@ -10,15 +10,13 @@
 #include <list>
 #include <tuple>
 
+#include "graph.hpp"
+
 using namespace std;
 
 void readfile(
 	string filename,
-	vector<vector<int>>& adj,
-	vector<array<int, 2>>& teleports
+	Graph& graph,
+	vector<Teleport>& teleports
 );
-
-void printAdjacency (vector<vector<int>> adj);
-void printTeleports (vector<array<int, 2>>& teleports);
-void printDistances (vector<vector<int>> distances);
 #endif

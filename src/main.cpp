@@ -10,21 +10,18 @@
 #include "graph.hpp"
 
 int main (int argc, char *argv[]) {
-	vector<vector<int>> adj;
-	vector<array<int, 2>> teleports;
-	vector<array<int, 2>> components;
+	Graph graph;
+	vector<Teleport> teleports;
 
 	if (argc < 2) {
 		cout << "Usage:" << std::endl;
 		cout << "./tp2 <file.in> <file.out>" << std::endl;
 	}
 
-	readfile(argv[1], adj, teleports);
+	readfile(argv[1], graph, teleports);
 
-	allComponents(adj, components);
+	graph.calculateShips();
 
-	// calculateTeleports(adj, teleports, components);
-
-	calculateDistances(adj, components, teleports);
+	graph.calculateDistances(teleports);
 	return 0;
 }
