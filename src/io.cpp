@@ -1,10 +1,10 @@
 #include "io.hpp"
 
 /**
- * [tokenizer  description]
- * @param  line      [description]
- * @param  delimiter [description]
- * @return           [description]
+ * Function that tokenizers a line by a delimiter
+ * @param  line      string to be tokenized
+ * @param  delimiter the delimiter for the tokenization
+ * @return           an array of strings
  */
 vector<string> tokenizer (string line, char delimiter) {
 	// Vector of string to save tokens
@@ -25,16 +25,12 @@ vector<string> tokenizer (string line, char delimiter) {
 
 
 /**
- * [readfile  description]
- * @param filename  [description]
- * @param g         [description]
- * @param teleports [description]
+ * Function that read the input file and populates the graph and the array of displacements
+ * @param filename  string with the name of the input file
+ * @param g         graph to be populated
+ * @param displacements vector of displacements to be populated
  */
-void readfile (
-	string filename,
-	Graph & g,
-	vector<Teleport>& teleports
-) {
+void readfile (string filename, Graph & g, vector<Displacement>& displacements) {
 	int u, v;
 
 	string line;
@@ -45,14 +41,16 @@ void readfile (
 		// get dimentions
 		getline (file, line);
 
+		// store the graph dimentions inside of the graph
 		tokens = tokenizer(line, ' ');
-		int N = stoi(tokens[0]);
-		int M = stoi(tokens[1]);
+		g.N = stoi(tokens[0]);
+		g.M = stoi(tokens[1]);
 
-		g.adj.resize(N);
+		// resize the graph's adjacency list
+		g.adj.resize(g.N);
 
-		// get M positions
-		for (int m = 0; m < M; m++) {
+		// get M edges (teleports)
+		for (int m = 0; m < g.M; m++) {
 			if(!getline (file, line)) {
 				cout << "erro na entrada" << endl;
 				file.close();
@@ -63,7 +61,7 @@ void readfile (
 			u = stoi(tokens[0]) - 1;
 			v = stoi(tokens[1]) - 1;
 
-			// insert the node grater first on adjacency list
+			// insert the node greater first on adjacency list
 			if (!g.adj[u].size() || g.adj[u].back() < v) {
 				g.adj[u].push_back(v);
 			} else {
@@ -78,8 +76,8 @@ void readfile (
 			}
 		}
 
-		// get N teleports
-		for (int n = 0; n < N; n++) {
+		// get N displacements
+		for (int n = 0; n < g.N; n++) {
 			if(!getline (file, line)) {
 				cout << "erro na entrada" << endl;
 				file.close();
@@ -90,14 +88,16 @@ void readfile (
 			u = stoi(tokens[0]) - 1;
 			v = stoi(tokens[1]) - 1 ;
 
+			// insert the displacement with the smaller position first in the order.
 			if (u < v) {
-				teleports.push_back(Teleport(u, v));
+				displacements.push_back(Displacement(u, v));
 			} else {
-				teleports.push_back(Teleport(v, u));
+				displacements.push_back(Displacement(v, u));
 			}
 		}
 
-		sort(teleports.begin(), teleports.end(), Teleport::compareSources);
+		// order the displacements by its sources
+		sort(displacements.begin(), displacements.end(), Displacement::compareSources);
 		file.close();
 	} else {
 		cout << "Unable to open file" << endl;

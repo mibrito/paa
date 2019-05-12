@@ -8,19 +8,27 @@
 #include "io.hpp"
 #include "graph.hpp"
 
+/**
+ * Main function that call the functions to found the two solutions of the problem
+ */
 int main (int argc, char *argv[]) {
 	Graph graph;
-	vector<Teleport> teleports;
+	vector<Displacement> displacements;
 
+	// in case the user don't present the input file the executable print's its
+	// usage
 	if (argc < 2) {
 		cout << "Usage:" << std::endl;
-		cout << "./tp2 <file.in> <file.out>" << std::endl;
+		cout << "./tp2 <file.in>" << std::endl;
 	}
 
-	readfile(argv[1], graph, teleports);
+	// read the input file
+	readfile(argv[1], graph, displacements);
 
-	graph.calculateShips();
+	// calculate the ship components
+	graph.calculateShipComponents();
 
-	graph.calculateAdvantageTime(teleports);
+	// calculate the advantage times
+	graph.calculateAdvantageTime(displacements);
 	return 0;
 }

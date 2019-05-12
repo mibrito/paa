@@ -3,33 +3,32 @@
 
 #include <vector>
 
-#define WHITE -1
-#define GREY -2
-#define BLACK -3
-
+// alias for the ship type
 #define R 0
 #define F 1
 #define B 2
 #define T 3
 
+// defines a maximum grater then the maximun values of the input
 #define MAX 1000000001
 
 using namespace std;
 
-class Teleport {
+class Displacement {
 public:
 	int source;
 	int target;
 
-	Teleport(const int s, const int t);
+	Displacement(const int s, const int t);
 
 	/**
-	 * [Ship  description]
-	 * @param start [description]
-	 * @param end   [description]
-	 * @param type  [description]
+	 * Compares two displacements by source index
+	 * @param  a first displacement to be compared
+	 * @param  b second displacement to be compared
+	 * @return true if the index of source of the first ship is lower the second
+	 * 			else return false
 	 */
-	static bool compareSources (const Teleport& a, const Teleport& b){
+	static bool compareSources (const Displacement& a, const Displacement& b){
 		return a.source < b.source;
 	}
 };
@@ -41,23 +40,28 @@ public:
 	int end;
 	int size;
 
-	int numberOfTeleports = 0;
-	vector<Teleport> teleports;
+	int numberOfDisplacements = 0;
+	vector<Displacement> displacements;
 
 	Ship (const int start, const int end, const int type);
-	void addTeleport (const Teleport& teleport);
+	void addDisplacement (const Displacement& displacement);
 
 	/**
-	 * [Ship::addTeleport  description]
-	 * @param teleport [description]
+	 * Function that comparates two ships by it displacement count
+	 * @param a first ship to be compared
+	 * @param b second ship to be compared
+	 * @return true if the number of displacements of the first ship is lower the second
+	 * 			else return false
 	 */
-	static bool compareNumberOfTeleports (const Ship& a, const Ship & b) {
-		return a.numberOfTeleports < b.numberOfTeleports;
+	static bool compareNumberOfDisplacements (const Ship& a, const Ship & b) {
+		return a.numberOfDisplacements < b.numberOfDisplacements;
 	}
 };
 
 class Graph {
 public:
+	int N; // number of vertices
+	int M; // number of teleports (edges)
 	vector<vector<int>> adj;
 	vector<Ship> ships;
 
@@ -67,9 +71,9 @@ public:
 	int cTrans = 0;
 	int cBom = 0;
 
-	void addTeleportsOnShips (const vector<Teleport>& ts);
-	void calculateShips ();
-	void calculateAdvantageTime (const vector<Teleport>& teleports);
+	void fillDisplacementsOnShips(const vector<Displacement>& ts);
+	void calculateShipComponents();
+	void calculateAdvantageTime(const vector<Displacement>& displacements);
 };
 
 #endif

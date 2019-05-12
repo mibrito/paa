@@ -14,6 +14,6 @@ using namespace std;
 void readfile(
 	string filename,
 	Graph& graph,
-	vector<Teleport>& teleports
+	vector<Displacement>& displacements
 );
 #endif
