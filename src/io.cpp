@@ -1,5 +1,11 @@
 #include "io.hpp"
 
+/**
+ * Function that tokenizers a line by a delimiter
+ * @param  line      string to be tokenized
+ * @param  delimiter the delimiter for the tokenization
+ * @return           an array of strings
+ */
 vector<string> tokenizer (string line, char delimiter) {
 	// Vector of string to save tokens
 	vector <string> tokens;
@@ -17,11 +23,14 @@ vector<string> tokenizer (string line, char delimiter) {
 	return tokens;
 }
 
-void readfile (
-	string filename,
-	vector<vector<int>>& adj,
-	map<tuple<int, int>, int>& teleports
-) {
+
+/**
+ * Function that read the input file and populates the graph and the array of displacements
+ * @param filename  string with the name of the input file
+ * @param g         graph to be populated
+ * @param displacements vector of displacements to be populated
+ */
+void readfile (string filename, Graph & g, vector<Displacement>& displacements) {
 	int u, v;
 
 	string line;
@@ -32,15 +41,16 @@ void readfile (
 		// get dimentions
 		getline (file, line);
 
+		// store the graph dimentions inside of the graph
 		tokens = tokenizer(line, ' ');
-		int N = stoi(tokens[0]);
-		int M = stoi(tokens[1]);
+		g.N = stoi(tokens[0]);
+		g.M = stoi(tokens[1]);
 
-		adj.resize(N);
-		// cout << N << " " << M << endl;
+		// resize the graph's adjacency list
+		g.adj.resize(g.N);
 
-		// get M positions
-		for (int m = 0; m < M; m++) {
+		// get M edges (teleports)
+		for (int m = 0; m < g.M; m++) {
 			if(!getline (file, line)) {
 				cout << "erro na entrada" << endl;
 				file.close();
@@ -51,14 +61,23 @@ void readfile (
 			u = stoi(tokens[0]) - 1;
 			v = stoi(tokens[1]) - 1;
 
-			adj[u].push_back(v);
-			adj[v].push_back(u);
+			// insert the node greater first on adjacency list
+			if (!g.adj[u].size() || g.adj[u].back() < v) {
+				g.adj[u].push_back(v);
+			} else {
+				g.adj[u].insert(g.adj[u].end() - 1, v);
+			}
+
+			// insert the node grater first on adjacency list
+			if (!g.adj[v].size() || g.adj[v].back() < u) {
+				g.adj[v].push_back(u);
+			} else {
+				g.adj[v].insert(g.adj[v].end() - 1, u);
+			}
 		}
 
-		u = -1;
-		v = -1;
-		// get N teleports
-		for (int n = 0; n < N; n++) {
+		// get N displacements
+		for (int n = 0; n < g.N; n++) {
 			if(!getline (file, line)) {
 				cout << "erro na entrada" << endl;
 				file.close();
@@ -67,51 +86,20 @@ void readfile (
 
 			tokens = tokenizer(line, ' ');
 			u = stoi(tokens[0]) - 1;
-			v = stoi(tokens[1]) - 1;
+			v = stoi(tokens[1]) - 1 ;
 
-			teleports[make_tuple(u, v)] = INT_MAX;
+			// insert the displacement with the smaller position first in the order.
+			if (u < v) {
+				displacements.push_back(Displacement(u, v));
+			} else {
+				displacements.push_back(Displacement(v, u));
+			}
 		}
 
+		// order the displacements by its sources
+		sort(displacements.begin(), displacements.end(), Displacement::compareSources);
 		file.close();
 	} else {
 		cout << "Unable to open file" << endl;
-	}
-}
-
-
-// stdio functions =================================
-void printAdjacency (vector<vector<int>> adj) {
-	cout << "adjacency " << adj.size() << endl;
-	for (size_t u = 0; u < adj.size(); u++) {
-		cout << u + 1 << ": ";
-		for (int v : adj[u]) {
-			cout << v << ", ";
-		}
-		cout << endl;
-	}
-}
-
-void printTeleports (map<tuple<int, int>, int>& teleports) {
-	cout << "teleports" << endl;
-	map<tuple<int, int>, int>::iterator itr;
-	for (itr = teleports.begin(); itr != teleports.end(); ++itr) {
-		cout << get<0>(itr->first) << " " << get<1>(itr->first) << " " << itr->second << endl;
-	}
-}
-
-void printDistances (vector<vector<int>> distances) {
-	cout << "distances 1" << endl;
-	for (size_t i = 0; i < distances.size(); i++) {
-		cout << i + 1 << ": ";
-		for (size_t j = 0; j < distances[i].size(); j++) {
-			cout << " ";
-			if (distances[i][j] != INT_MAX) {
-				cout << distances[i][j];
-			} else {
-				cout << "-";
-			}
-			cout << " "; // << ", " << parents[i][j];
-		}
-		cout << endl;
 	}
 }
