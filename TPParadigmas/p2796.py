@@ -11,27 +11,31 @@ def adj(a, b):
                 return True
 
 def merge(a, b):
-    if (a[:2] == b[:2]) and adj(a[2:], b[2:]):
-        return [a[:2] + (min(a[2:] + b[2:]), max(a[2:] + b[2:]))]
-    elif (a[2:] == b[2:]) and adj(a[:2], b[:2]):
-        return [(min(a[:2] + b[:2]), max(a[:2] + b[:2])) + a[2:]]
+    if adj(a[2:], b[2:]):
+        if a[:2] == b[:2]:
+            return [a[:2] + (min(a[2:] + b[2:]), max(a[2:] + b[2:]))]
+        if min(a[:2]) <= min(b[:2]) and min(b[:2]) <= max(a[:2]):
+            return [(min(a[2:] + b[2:]), max(a[2:] + b[2:])) + b[:2]]
+    if adj(a[:2], b[:2]):
+        if (a[2:] == b[2:]):
+            return [(min(a[:2] + b[:2]), max(a[:2] + b[:2])) + a[2:]]
+        if min(a[2:]) <= min(b[2:]) and min(b[2:]) <= max(a[2:]):
+            return [b[2:] + (min(a[:2] + b[:2]), max(a[:2] + b[:2]))]
     else:
         return [a, b]
 
 def mergeAll(l):
-    merged = [False] * len(l)
     res = []
+    merged = [False] * len(l)
     for i in range(len(l)):
         for j in range(i+1, len(l)):
             m = merge(l[i], l[j])
-            print l[i], l[j], m
             if len(m) is 1:
                 merged[i] = True
                 merged[j] = True
                 res = res + m
         if not merged[i]:
-            res = res + [l[i]]
-            print l[i]
+            res.append(l[i])
     return res
 
 def divide (map, r0, r1, c0, c1):
@@ -40,44 +44,58 @@ def divide (map, r0, r1, c0, c1):
 
     res = []
 
-    print 'divide', (r0, r1, c0, c1), rm, cm
+    print 'divide', (r0, r1, c0, c1), rm, cm, '+'
 
     if rm < 0 or cm < 0:
         print 'A'
+        print 'divide', (r0, r1, c0, c1), rm, cm, '-'
         return []
 
     if (r1 == r0 and c1 == c0):
         print 'B'
         if map[r0][c0] is '.':
-            print (r0, r1, c0, c1)
+           print (r0, r1, c0, c1)
+
+        print 'divide', (r0, r1, c0, c1), rm, cm, '-'
         return [(r0, r1, c0, c1)] if map[r0][c0] is '.' else []
 
-    elif r1 <= r0 and c1 == c0:
+    elif r0 == r1 and c0 < c1:
+        print 'D'
         a = divide(map, r0, r1, c0, c0 + cm)
-        b = divide(map, r0, r1, c0 + cm + 1, c1)
-        m = mergeAll(a + b)
-        print 'C'
-        print 'a', a, 'b', b, 'm', m
+        c = divide(map, r0, r1, c0 + cm + 1, c1)
+        m = mergeAll(a + c)
+        print 'a', a, 'c', c, 'm', m
+        print 'divide', (r0, r1, c0, c1), rm, cm, '-'
         return m
 
-    elif c1 <= c0 and r1 == r0:
+
+    elif c0 == c1 and r0 < r1:
+        print 'C'
         a = divide(map, r0, r0 + rm, c0, c1)
-        c = divide(map, r0 + rm + 1, r1, c0, c1)
+        b = divide(map, r0 + rm + 1, r1, c0, c1)
         m = mergeAll(a + b)
-        print 'D'
-        print 'a', a, 'c', c, 'm', m
+        print 'a', a, 'b', b, 'm', m
+        print 'divide', (r0, r1, c0, c1), rm, cm, '-'
         return m
+
+
+    print 'E'
+    print ((r0, r0 + rm, c0, c0 + cm),
+       (r0, r0 + rm, c0 + cm + 1, c1),
+       (r0 + rm + 1, r1, c0, c0 + cm),
+       (r0 + rm + 1, r1, c0 + cm + 1, c1))
+
 
     res = mergeAll(
         divide(map, r0, r0 + rm, c0, c0 + cm) +
         divide(map, r0, r0 + rm, c0 + cm + 1, c1) +
         divide(map, r0 + rm + 1, r1, c0, c0 + cm) +
-        divide(map, r0 + cm + 1, r1, c0 + cm + 1, c1)
+        divide(map, r0 + rm + 1, r1, c0 + cm + 1, c1)
     )
 
-    print 'E'
+    print 'divide', (r0, r1, c0, c1), rm, cm, '-'
     # print res
-    return res
+    return list(set(res))
 
 def  main ():
     linha = raw_input().split()
@@ -109,14 +127,15 @@ def  main ():
 
     rects = mergeAll(divide(map, 0, N-1, 0, M-1))
     # print rects
-    # areas = sorted([(dim(r), r)  for r in rects], key=lambda x: max(x[0]))
-    # tables = sorted(tables, key=lambda x: max(x))
+    areas = sorted([(dim(r), r)  for r in rects], key=lambda x: max(x[0]))
+    tables = sorted(tables, key=lambda x: max(x))
 
-    # for t in tables:
-    #     for a in areas:
-    #         if a[0][0] >= t[0] and a[0][1] >= t[1]:
-    #             print t[0], t[1]
-    #             return
+    for t in tables:
+         for a in areas:
+   #          print a
+             if a[0][0] >= t[0] and a[0][1] >= t[1]:
+                 print t[0], t[1]
+                 return
 
 
 
