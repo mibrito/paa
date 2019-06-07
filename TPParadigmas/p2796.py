@@ -11,18 +11,12 @@ def adj(a, b):
                 return True
 
 def merge(a, b):
-    if adj(a[2:], b[2:]):
-        if a[:2] == b[:2]:
-            return [a[:2] + (min(a[2:] + b[2:]), max(a[2:] + b[2:]))]
-        if min(a[:2]) <= min(b[:2]) and min(b[:2]) <= max(a[:2]):
-            return [(min(a[2:] + b[2:]), max(a[2:] + b[2:])) + b[:2]]
-    if adj(a[:2], b[:2]):
-        if (a[2:] == b[2:]):
-            return [(min(a[:2] + b[:2]), max(a[:2] + b[:2])) + a[2:]]
-        if min(a[2:]) <= min(b[2:]) and min(b[2:]) <= max(a[2:]):
-            return [b[2:] + (min(a[:2] + b[:2]), max(a[:2] + b[:2]))]
-    else:
-        return [a, b]
+    if adj(a[2:], b[2:]) and a[:2] == b[:2]:
+        return [a[:2] + (min(a[2:] + b[2:]), max(a[2:] + b[2:]))]
+    if adj(a[:2], b[:2]) and (a[2:] == b[2:]):
+        return [(min(a[:2] + b[:2]), max(a[:2] + b[:2])) + a[2:]]
+
+    return [a, b]
 
 def mergeAll(l):
     res = []
@@ -30,11 +24,13 @@ def mergeAll(l):
     for i in range(len(l)):
         for j in range(i+1, len(l)):
             m = merge(l[i], l[j])
+            print l[i], l[j], m
             if len(m) is 1:
                 merged[i] = True
                 merged[j] = True
                 res = res + m
         if not merged[i]:
+            print l[i]
             res.append(l[i])
     return res
 
@@ -112,18 +108,6 @@ def  main ():
     for i in range(K):
         line = raw_input().split()
         tables.append((int(line[0]), int(line[1])))
-
-    # l = [
-    #     (0, 0, 0, 0),
-    #     (1, 1, 1, 1),
-    #     (0, 0, 3, 3),
-    #     (1, 1, 2, 2),
-    #     (1, 1, 3, 3),
-    #     (2, 2, 0, 0),
-    #     (2, 2, 2, 2),
-    #     (2, 2, 3, 3),
-    #     (3, 3, 3, 3)
-    # ]
 
     rects = mergeAll(divide(map, 0, N-1, 0, M-1))
     # print rects
